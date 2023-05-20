@@ -1,3 +1,4 @@
+import { evmparams } from '@/consants/params'
 import styles from '../styles/Home.module.css'
 import UniversalProvider from '@walletconnect/universal-provider'
 import { Web3Modal } from '@web3modal/standalone'
@@ -53,6 +54,8 @@ export default function Home() {
     }
     // await session approval from the wallet app
     const walletConnectSession = await approval()
+
+    web3modal.closeModal()
 
     console.log("walletConnectSession: ", walletConnectSession)
 
