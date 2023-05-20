@@ -14,10 +14,16 @@ export default function Home() {
 
   async function initWC (){
     const provider = await UniversalProvider.init({
-    projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
-    relayUrl: 'wss://relay.walletconnect.com'
+      projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+      metadata: {
+        name: document.title,
+        description: document?.querySelector('meta[name="description"]')?.textContent ?? "",
+        url: `${window.location.href}`,
+        icons: [`${window.location.href}favicon.ico`],
+      },
     })
     setProvider(provider)
+    console.log("universal provider: ", provider)
   }
 
   async function connectWC(){
@@ -64,6 +70,12 @@ export default function Home() {
     console.log("accounts: ",accounts)
   }
 
+  function disconnectWC(){
+    if(provider?.session){
+      provider.disconnect()
+    }
+  }
+
   useEffect(()=>{
     initWC()
   },[])
@@ -71,6 +83,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <button onClick={connectWC} >Connect</button>
+      <button onClick={disconnectWC} >disconnect</button>
     </main>
   )
 }
